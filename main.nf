@@ -97,7 +97,6 @@ if ( !params.genome || !params.reads) {
     //reads_file = file(params.reads)
     //bamFile = Channel.fromPath("${params.bam}").ifEmpty{Channel.empty()}
 
-/*
     // If pam file is specified
     if(params.bam) {
         // Index it if index is missing
@@ -120,7 +119,7 @@ if ( !params.genome || !params.reads) {
             Channel.fromPath(file("${file(params.bam)}.bai")).into{ bamIndexSniffles; bamIndexSvim }
         }
     }
-*/
+
     // get path of genome file for publishing its index if missing
     genomeFilePath = "${file(params.genome).getParent()}"
 
@@ -232,7 +231,7 @@ process createBam {
     """
 }
 
-//if(!params.bam) {
+if(!params.bam) {
     process indexBam {
         publishDir ("${params.outDir}", mode: "copy")
         input:
@@ -249,7 +248,7 @@ process createBam {
         samtools index $bam
         """
     }
-//}
+}
 
 process sniffles {
     publishDir ("$params.outDir/unfiltered_calls/sniffles", mode: "copy")
